@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        logicalFilePath="db/changelog/changelog.xml">
+
+    <preConditions>
+        <dbms type="postgresql"/>
+    </preConditions>
+
+    <changeSet id="Create user table" author="hss">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="user"/>
+            </not>
+        </preConditions>
+
+        <sql>
+            CREATE TABLE "user" (
+                "id" SERIAL PRIMARY KEY,
+                "username" VARCHAR(255) NOT NULL,
+                "email" VARCHAR(255) NOT NULL,
+                "password" VARCHAR(500) NOT NULL,
+                "salt" VARCHAR(100) NOT NULL
+            );
+        </sql>
+        <comment>User table creation</comment>
+    </changeSet>
+
+</databaseChangeLog>

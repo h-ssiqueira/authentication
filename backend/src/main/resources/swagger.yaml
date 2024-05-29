@@ -1,0 +1,136 @@
+openapi: 3.0.3
+info:
+  title: Authentication
+  version: v1
+paths:
+  /api/v1/auth/login:
+    post:
+      tags:
+        - Auth
+      summary: "Login"
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          multipart/x-www-form-urlencoded:
+            schema:
+              $ref: "#/components/schemas/AuthRequest"
+      responses:
+        200:
+          description: "Authenticated"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthenticationToken"
+        400:
+          description: "Missing parameter"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+  /api/v1/auth/logout:
+    delete:
+      tags:
+        - Auth
+      summary: "Logout"
+      operationId: logout
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationToken"
+      responses:
+        200:
+          description: "Successful Logout"
+        500:
+          description: "Internal Server Error"
+  /api/v1/users:
+    post:
+      tags:
+        - User
+      summary: "User creation"
+      operationId: createUser
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationToken"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserCreationRequest"
+      responses:
+        201:
+          description: "Created"
+        400:
+          description: "Missing parameter"
+        401:
+          description: "Unauthorized"
+        500:
+          description: "Internal Server Error"
+  /api/v1/users/{userId}:
+    get:
+      tags:
+        - User
+      summary: "User search"
+      operationId: fetchUsers
+      parameters:
+        - $ref: "#/components/parameters/AuthorizationToken"
+        - $ref: "#/components/parameters/UserId"
+      responses:
+        200:
+          description: "Users found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserCreated"
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+        500:
+          description: "Internal Server Error"
+components:
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      schema:
+        type: string
+      required: true
+    AuthorizationToken:
+      name: securityToken
+      in: header
+      schema:
+        type: string
+      required: true
+  schemas:
+    AuthRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    UserCreationRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+        - email
+    AuthenticationToken:
+      type: object
+      properties:
+        token:
+          type: string
+    UserCreated:
+      type: object
+      properties:
+        id:
+          type: string

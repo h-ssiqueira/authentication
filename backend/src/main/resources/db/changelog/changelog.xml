@@ -13,12 +13,12 @@
     <changeSet id="Create user table" author="hss">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="user"/>
+                <tableExists tableName="users"/>
             </not>
         </preConditions>
 
         <sql>
-            CREATE TABLE "user" (
+            CREATE TABLE "users" (
                 "id" SERIAL PRIMARY KEY,
                 "username" VARCHAR(255) NOT NULL,
                 "email" VARCHAR(255) NOT NULL,

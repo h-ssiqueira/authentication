@@ -2,12 +2,16 @@ openapi: 3.0.3
 info:
   title: Authentication
   version: v1
+servers:
+  - url: http://localhost:8080
+    description: Development server
 paths:
   /api/v1/auth/login:
     post:
       tags:
         - Auth
       summary: "Login"
+      security: []
       operationId: login
       requestBody:
         required: true
@@ -34,8 +38,6 @@ paths:
         - Auth
       summary: "Logout"
       operationId: logout
-      parameters:
-        - $ref: "#/components/parameters/AuthorizationToken"
       responses:
         200:
           description: "Successful Logout"
@@ -47,8 +49,6 @@ paths:
         - User
       summary: "User creation"
       operationId: createUser
-      parameters:
-        - $ref: "#/components/parameters/AuthorizationToken"
       requestBody:
         required: true
         content:
@@ -64,14 +64,34 @@ paths:
           description: "Unauthorized"
         500:
           description: "Internal Server Error"
-  /api/v1/users/{userId}:
     get:
       tags:
         - User
       summary: "User search"
       operationId: fetchUsers
       parameters:
-        - $ref: "#/components/parameters/AuthorizationToken"
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/Size"
+      responses:
+        200:
+          description: "Users found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponseDTOList"
+        401:
+          description: "Unauthorized"
+        404:
+          description: "Not Found"
+        500:
+          description: "Internal Server Error"
+  /api/v1/users/{userId}:
+    get:
+      tags:
+        - User
+      summary: "User search"
+      operationId: fetchUser
+      parameters:
         - $ref: "#/components/parameters/UserId"
       responses:
         200:
@@ -79,27 +99,40 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UserCreated"
+                $ref: "#/components/schemas/UserResponseDTO"
         401:
           description: "Unauthorized"
         404:
           description: "Not Found"
         500:
           description: "Internal Server Error"
+security:
+  - bearerAuth: []
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
   parameters:
     UserId:
       name: userId
       in: path
       schema:
-        type: string
+        type: integer
+        format: int64
       required: true
-    AuthorizationToken:
-      name: securityToken
-      in: header
+    Page:
+      name: page
+      in: query
       schema:
-        type: string
-      required: true
+        type: integer
+      required: false
+    Size:
+      name: size
+      in: query
+      schema:
+        type: integer
+      required: false
   schemas:
     AuthRequest:
       type: object
@@ -116,10 +149,17 @@ components:
       properties:
         username:
           type: string
+          minimum: 3
+          maximum: 20
+          example: 'username'
         email:
           type: string
+          pattern: '^(?:[a-z0-9!#$%&''*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&''*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])$'
+          example: 'email@email.com'
         password:
           type: string
+          pattern: '^(?=[^\n]*[A-Z])(?=[^\n]*[a-z])(?=[^\n]*\d)(?=[^\n]*\W)[^\n]{12,}$'
+          example: 'StrongPassword'
       required:
         - username
         - password
@@ -129,8 +169,20 @@ components:
       properties:
         token:
           type: string
-    UserCreated:
+          example: 'authentication token'
+    UserResponseDTOList:
       type: object
       properties:
-        id:
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserResponseDTO"
+    UserResponseDTO:
+      type: object
+      properties:
+        username:
           type: string
+          example: 'username'
+        email:
+          type: string
+          example: 'email@email.com'

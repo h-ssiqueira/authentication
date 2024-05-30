@@ -1,6 +1,7 @@
 package com.hss.authentication.controller;
 
-import com.hss.authentication.model.AuthenticationToken;
+import com.hss.authentication.generated.controller.AuthApi;
+import com.hss.authentication.generated.model.AuthenticationToken;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,11 +10,11 @@ public class AuthController implements AuthApi {
 
     @Override
     public ResponseEntity<AuthenticationToken> login(String username, String password) {
-        return AuthApi.super.login(username, password);
+        return null;
     }
 
     @Override
-    public ResponseEntity<Void> logout(String securityToken) {
-        return AuthApi.super.logout(securityToken);
+    public ResponseEntity<Void> logout() {
+        return null;
     }
 }

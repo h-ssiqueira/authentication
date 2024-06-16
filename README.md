@@ -1,5 +1,6 @@
 # Authentication
 ![GitHub Repository Size](https://img.shields.io/github/repo-size/h-ssiqueira/authentication?label=Repository%20Size&style=for-the-badge)
+[![GitHub Pages](https://img.shields.io/github/actions/workflow/status/h-ssiqueira/authentication/docs.yaml?style=for-the-badge&label=swagger%20documentation)](https://h-ssiqueira.github.io/authentication/)
 
 ![Docker](https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Java](https://img.shields.io/badge/java%2021-000000?style=for-the-badge&logo=openjdk&logoColor=white)

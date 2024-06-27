@@ -26,15 +26,14 @@ public class UserServiceImpl implements UserService {
         var salt = new Base64StringKeyGenerator(73).generateKey();
         var password = new Argon2PasswordEncoder(64,256,1,1024,9).encode("%s%s".formatted(salt,dto.getPassword()));
 
-        newUser.setPassword(password);
-        newUser.setSalt(salt);
-        var id = userRepository.save(newUser);
-        log.info("Created user with id: {}", id);
+        newUser.updatePassword(password,salt);
+        var user = userRepository.save(newUser);
+        log.info("Created user with id: {}", user.getId());
     }
 
     @Override
-    public Page<User> fetchUsers(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    public Page<User> fetchUsers(String searchText, Pageable pageable) {
+        return userRepository.findBySearchText(searchText, pageable);
     }
 
     @Override

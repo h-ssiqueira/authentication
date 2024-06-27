@@ -7,17 +7,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
-@Getter
 @Builder
-@Setter
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -39,4 +37,8 @@ public class User {
     @Column(name = "salt")
     private String salt;
 
+    public void updatePassword(String password, String salt) {
+        this.setPassword(password);
+        this.setSalt(salt);
+    }
 }

@@ -16,7 +16,7 @@ paths:
       requestBody:
         required: true
         content:
-          multipart/x-www-form-urlencoded:
+          application/x-www-form-urlencoded:
             schema:
               $ref: "#/components/schemas/AuthRequest"
       responses:
@@ -28,10 +28,22 @@ paths:
                 $ref: "#/components/schemas/AuthenticationToken"
         400:
           description: "Missing parameter"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
         401:
           description: "Unauthorized"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
         500:
           description: "Internal Server Error"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/v1/auth/logout:
     delete:
       tags:
@@ -43,6 +55,10 @@ paths:
           description: "Successful Logout"
         500:
           description: "Internal Server Error"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/v1/users:
     post:
       tags:
@@ -60,16 +76,35 @@ paths:
           description: "Created"
         400:
           description: "Missing parameter"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
         401:
           description: "Unauthorized"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        404:
+          description: "Not Found"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
         500:
           description: "Internal Server Error"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
     get:
       tags:
         - User
       summary: "User search"
       operationId: fetchUsers
       parameters:
+        - $ref: "#/components/parameters/UserSearchQuery"
         - $ref: "#/components/parameters/Page"
         - $ref: "#/components/parameters/Size"
       responses:
@@ -81,10 +116,22 @@ paths:
                 $ref: "#/components/schemas/UserResponseDTOList"
         401:
           description: "Unauthorized"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
         404:
           description: "Not Found"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
         500:
           description: "Internal Server Error"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /api/v1/users/{userId}:
     get:
       tags:
@@ -102,10 +149,22 @@ paths:
                 $ref: "#/components/schemas/UserResponseDTO"
         401:
           description: "Unauthorized"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
         404:
           description: "Not Found"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
         500:
           description: "Internal Server Error"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/Error"
 security:
   - bearerAuth: []
 components:
@@ -121,6 +180,12 @@ components:
         type: integer
         format: int64
       required: true
+    UserSearchQuery:
+      name: q
+      in: query
+      schema:
+        type: string
+      required: false
     Page:
       name: page
       in: query
@@ -134,6 +199,19 @@ components:
         type: integer
       required: false
   schemas:
+    Error:
+      type: object
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        message:
+          type: string
     AuthRequest:
       type: object
       properties:

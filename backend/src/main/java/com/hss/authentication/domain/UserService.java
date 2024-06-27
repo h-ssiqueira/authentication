@@ -11,7 +11,7 @@ public interface UserService {
 
     void createUser(UserCreationRequest dto);
 
-    Page<User> fetchUsers(Pageable pageable);
+    Page<User> fetchUsers(String searchText, Pageable pageable);
 
     Optional<User> fetchUser(Long userId);
 }

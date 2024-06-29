@@ -86,12 +86,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: "#/components/schemas/Error"
-        404:
-          description: "Not Found"
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Error"
         500:
           description: "Internal Server Error"
           content:
@@ -110,18 +104,31 @@ paths:
       responses:
         200:
           description: "Users found"
+          headers:
+            X-Has-Next:
+              description: Indicates if has a next page with content
+              schema:
+                type: integer
+            X-Total-Size:
+              description: Indicates the total size of contents of actual page
+              schema:
+                type: integer
+            X-Total-Elements:
+              description: Indicates the total number of elements found with the parameters provided in the request
+              schema:
+                type: integer
+            X-Total-Pages:
+              description: Indicates the total number of pages found with the parameters provided in the request
+              schema:
+                type: integer
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserResponseDTOList"
+        204:
+          description: "No content found"
         401:
           description: "Unauthorized"
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        404:
-          description: "Not Found"
           content:
             application/problem+json:
               schema:
@@ -147,14 +154,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserResponseDTO"
+        204:
+          description: "User not found"
         401:
           description: "Unauthorized"
-          content:
-            application/problem+json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        404:
-          description: "Not Found"
           content:
             application/problem+json:
               schema:

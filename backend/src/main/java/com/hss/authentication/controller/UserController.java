@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static java.util.Objects.nonNull;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,7 +28,7 @@ public class UserController implements UserApi {
     @Override
     public ResponseEntity<Void> createUser(UserCreationRequest userCreationRequest) {
         userService.createUser(userCreationRequest);
-        return ResponseEntity.status(CREATED).build();
+        return ResponseEntity.status(CREATED).contentType(APPLICATION_JSON).build();
     }
 
     @Override
@@ -47,12 +48,10 @@ public class UserController implements UserApi {
 
     private HttpHeaders buildHeaders(Page<?> pages) {
         var headers = new HttpHeaders();
-        headers.add("page", String.valueOf(pages.getNumber() + 1));
-        headers.add("pageSize", String.valueOf(pages.getSize()));
-        headers.add("hasNext", String.valueOf(pages.hasNext()));
-        headers.add("numberOfElements", String.valueOf(pages.getNumberOfElements()));
-        headers.add("totalElements", String.valueOf(pages.getTotalElements()));
-        headers.add("totalPages", String.valueOf(pages.getTotalPages()));
+        headers.add("X-Has-Next", String.valueOf(pages.hasNext()));
+        headers.add("X-Total-Size", String.valueOf(pages.getNumberOfElements()));
+        headers.add("X-Total-Elements", String.valueOf(pages.getTotalElements()));
+        headers.add("X-Total-Pages", String.valueOf(pages.getTotalPages()));
         return headers;
     }
 

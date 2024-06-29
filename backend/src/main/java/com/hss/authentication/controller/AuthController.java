@@ -5,7 +5,7 @@ import com.hss.authentication.generated.controller.AuthApi;
 import com.hss.authentication.generated.model.AuthenticationToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -15,7 +15,7 @@ public class AuthController implements AuthApi {
     private final AuthService authService;
 
     @Override
-    public ResponseEntity<AuthenticationToken> login(@RequestPart("username") String username, @RequestPart("password") String password) {
+    public ResponseEntity<AuthenticationToken> login(@RequestParam("username") String username, @RequestParam("password") String password) {
         var response = authService.login(username, password);
         return ResponseEntity.ok(response);
     }

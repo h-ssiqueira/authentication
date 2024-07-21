@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -26,9 +27,11 @@ public class User {
     private Long id;
 
     @Column(name = "username")
+    @Formula("lower(username)")
     private String username;
 
     @Column(name = "email")
+    @Formula("lower(email)")
     private String email;
 
     @Column(name = "password")

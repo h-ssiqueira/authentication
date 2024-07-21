@@ -3,7 +3,7 @@ info:
   title: Authentication
   version: v1
 servers:
-  - url: http://localhost:8080
+  - url: https://localhost:8080
     description: Development server
 paths:
   /api/v1/auth/login:
@@ -261,6 +261,9 @@ components:
     UserResponseDTO:
       type: object
       properties:
+        id:
+          type: string
+          example: "1"
         username:
           type: string
           example: 'username'

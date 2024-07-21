@@ -104,11 +104,30 @@
 			<version>5.1.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20240303</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.16.1</version>
+		</dependency>
+
+
 		<!-- Testing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<version>${spring.boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>2.2.224</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -189,18 +208,15 @@
 							<generateApiTests>false</generateApiTests>
 							<generateModelTests>false</generateModelTests>
 							<configOptions>
+								<validateSpec>false</validateSpec>
+								<implicitHeaders>true</implicitHeaders>
+								<serializationLibrary>jackson</serializationLibrary>
+								<openApiNullable>false</openApiNullable>
 								<useTags>true</useTags>
-								<library>spring-boot</library>
 								<useJakartaEe>true</useJakartaEe>
 								<useSpringboot3>true</useSpringboot3>
 								<interfaceOnly>true</interfaceOnly>
 								<useTags>true</useTags>
-								<reactive>false</reactive>
-								<useBeanValidation>true</useBeanValidation>
-								<performBeanValidation>true</performBeanValidation>
-								<useOptional>false</useOptional>
-								<serviceInterface>false</serviceInterface>
-								<serviceImplementation>false</serviceImplementation>
 							</configOptions>
 						</configuration>
 					</execution>

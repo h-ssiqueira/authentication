@@ -13,6 +13,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
-    @Query("SELECT usr FROM User usr WHERE UPPER(CONCAT(usr.id, ' ', usr.username, ' ', usr.email)) LIKE UPPER(CONCAT('%', :searchText, '%'))")
+    @Query("""
+            SELECT usr FROM User usr
+            WHERE :searchText IS NULL
+                OR CONCAT(usr.id, ' ', usr.username, ' ', usr.email) LIKE CONCAT('%', LOWER(CAST(:searchText AS text)), '%')""")
     Page<User> findBySearchText(@Param("searchText") String searchText, Pageable pageable);
 }

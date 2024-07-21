@@ -11,8 +11,7 @@ import static java.util.Collections.singletonList;
 
 public final class UserMock {
 
-    private UserMock() {
-    }
+    private UserMock() {}
 
     public static UserCreationRequest userCreationRequestMock() {
         return new UserCreationRequest().email("email@email.com").password("StrongPass:N0ss@").username("username");

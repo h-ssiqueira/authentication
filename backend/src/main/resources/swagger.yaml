@@ -230,8 +230,8 @@ components:
       properties:
         username:
           type: string
-          minimum: 3
-          maximum: 20
+          minLength: 3
+          maxLength: 20
           example: 'username'
         email:
           type: string
@@ -241,10 +241,14 @@ components:
           type: string
           pattern: '^(?=[^\n]*[A-Z])(?=[^\n]*[a-z])(?=[^\n]*\d)(?=[^\n]*\W)[^\n]{12,}$'
           example: 'StrongPassword'
+        role:
+          type: string
+          enum: ['ADMIN','USER']
       required:
         - username
         - password
         - email
+        - role
     AuthenticationToken:
       type: object
       properties:
@@ -270,3 +274,6 @@ components:
         email:
           type: string
           example: 'email@email.com'
+        role:
+          type: string
+          enum: ['ADMIN','USER']
